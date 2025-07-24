@@ -2,19 +2,19 @@ import React, { useState, useEffect } from "react";
 
 const UserForm = ({ onSubmit, user }) => {
   const [tipo, setTipo] = useState("Alumno");
-  const [nombre, setNombre] = useState("");
+  const [nombre_completo, setNombreCompleto] = useState("");
   const [correo, setCorreo] = useState("");
   const [telefono, setTelefono] = useState("");
 
   useEffect(() => {
     if (user) {
       setTipo(user.tipo);
-      setNombre(user.nombre);
+      setNombreCompleto(user.nombre_completo);
       setCorreo(user.correo);
       setTelefono(user.telefono);
     } else {
       setTipo("Alumno");
-      setNombre("");
+      setNombreCompleto("");
       setCorreo("");
       setTelefono("");
     }
@@ -23,34 +23,38 @@ const UserForm = ({ onSubmit, user }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (!nombre || !correo || !telefono) {
+    if (!nombre_completo || !correo || !telefono) {
       alert("Por favor completa todos los campos.");
       return;
     }
 
     const nuevoUsuario = {
-      id: user ? user.id : Date.now(),
       tipo,
-      nombre,
+      nombre_completo,
       correo,
       telefono,
     };
 
+    if (user && user.id) {
+      nuevoUsuario.id = user.id; 
+    }
+
     onSubmit(nuevoUsuario);
 
-    // Limpiar si es nuevo
-    if (!user) {
-      setNombre("");
-      setCorreo("");
-      setTelefono("");
-      setTipo("Alumno");
-    }
+    setTipo("Alumno");
+    setNombreCompleto("");
+    setCorreo("");
+    setTelefono("");
   };
 
   return (
     <form onSubmit={handleSubmit} style={styles.form}>
       <label style={styles.label}>Tipo de Usuario:</label>
-      <select value={tipo} onChange={(e) => setTipo(e.target.value)} style={styles.input}>
+      <select
+        value={tipo}
+        onChange={(e) => setTipo(e.target.value)}
+        style={styles.input}
+      >
         <option value="Alumno">Alumno</option>
         <option value="Administrador">Administrador</option>
       </select>
@@ -58,8 +62,8 @@ const UserForm = ({ onSubmit, user }) => {
       <label style={styles.label}>Nombre completo:</label>
       <input
         type="text"
-        value={nombre}
-        onChange={(e) => setNombre(e.target.value)}
+        value={nombre_completo}
+        onChange={(e) => setNombreCompleto(e.target.value)}
         style={styles.input}
       />
 
@@ -119,4 +123,3 @@ const styles = {
 };
 
 export default UserForm;
-

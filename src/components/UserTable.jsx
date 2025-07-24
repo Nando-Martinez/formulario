@@ -23,7 +23,7 @@ const UserTable = ({ users, onEdit, onDelete }) => {
           users.map((user) => (
             <tr key={user.id} style={styles.tr}>
               <td style={styles.td}>{user.tipo}</td>
-              <td style={styles.td}>{user.nombre}</td>
+              <td style={styles.td}>{user.nombre_completo}</td>
               <td style={styles.td}>{user.correo}</td>
               <td style={styles.td}>{user.telefono}</td>
               <td style={styles.td}>
